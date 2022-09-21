@@ -402,10 +402,3 @@ class StudentListCreateAPIView(generics.ListCreateAPIView):
     ordering_fields = ['first_name', ]
     # ordering_fields = '__all__'
 ```
-
-<br>
-
-**<p align="center">&#9786; Happy Coding! &#9997;</p>**
-
-<p>Clarusway<img align="right"
-  src="https://secure.meetupstatic.com/photos/event/3/1/b/9/600_488352729.jpeg"  width="15px"></p>
