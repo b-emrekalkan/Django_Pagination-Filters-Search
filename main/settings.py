@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'student_api',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -127,10 +128,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #! PagePagination
 
-""" REST_FRAMEWORK = {
+REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
-} """
+}
 
 #! LimitPagination:
 #? 👇 http://127.0.0.1:8000/api/student/?limit=10&offset=25
@@ -139,3 +140,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 """ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 } """
+
+#! CursorPagination:
+#? 👆 need "Created" column in database (for default settings)
+
+""" REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+    'PAGE_SIZE': 3
+} """
+
+#! Generic Filtering 👇
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}

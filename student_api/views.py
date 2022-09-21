@@ -99,17 +99,25 @@ class StudentRUD(RetrieveUpdateDestroyAPIView):
 
 ### CBV ### ### ViewSet ###
 
-from .pagination import SmallPageNumberPagination, MyLimitOffsetPagination
+from .pagination import SmallPageNumberPagination, MyLimitOffsetPagination, MycursorPagination
 
 class StudentGRUD(ModelViewSet):
-
     queryset=Student.objects.all()
     serializer_class=StudentSerializer
-    pagination_class = MyLimitOffsetPagination
+    pagination_class = SmallPageNumberPagination
+    filterset_fields = ['first_name','last_name']
 
-    @action(detail = False, methods = ['GET'])
-    def student_count(self, request):
-        count = {
+    def get_queryset(self):
+        queryset=self.queryset
+        path = self.request.query_params.get('path')
+        if path is not None:
+            mypath = Path.objects.get(path_name=path)
+            queryset = queryset.filter(path=mypath.id)
+        return queryset
+
+    @action(detail=False,methods=['GET'])
+    def student_count(self,request):
+        count={
             'student-count':self.queryset.count()
         }
         return Response(count)
