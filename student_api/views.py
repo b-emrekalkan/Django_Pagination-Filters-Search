@@ -100,25 +100,30 @@ class StudentRUD(RetrieveUpdateDestroyAPIView):
 ### CBV ### ### ViewSet ###
 
 from .pagination import SmallPageNumberPagination, MyLimitOffsetPagination, MycursorPagination
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 class StudentGRUD(ModelViewSet):
-    queryset=Student.objects.all()
-    serializer_class=StudentSerializer
+
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
     pagination_class = SmallPageNumberPagination
-    filterset_fields = ['first_name','last_name']
+    #! Add filterset_fields 👇:
+    filter_backends = [DjangoFilterBackend, SearchFilter] #? for local settings.
+    filterset_fields = ['first_name', 'last_name', 'number']
+    search_fields = ['first_name']
 
     def get_queryset(self):
-        queryset=self.queryset
+        queryset = self.queryset
         path = self.request.query_params.get('path')
         if path is not None:
             mypath = Path.objects.get(path_name=path)
             queryset = queryset.filter(path=mypath.id)
         return queryset
 
-    @action(detail=False,methods=['GET'])
-    def student_count(self,request):
-        count={
-            'student-count':self.queryset.count()
+    @action(detail = False, methods = ['GET'])
+    def student_count(self, request):
+        count = {
+            'student-count': self.queryset.count()
         }
         return Response(count)
 
